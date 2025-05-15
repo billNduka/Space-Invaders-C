@@ -1,6 +1,6 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
-
+// first commit by Emele Winner 
 int main() {
     SDL_Init(SDL_INIT_VIDEO);
     printf("\nStarting\n");
