@@ -7,15 +7,17 @@ int main() {
     printf("\nStarting\n");
     SDL_Window* window = SDL_CreateWindow("SDL Test",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        640, 480, SDL_WINDOW_SHOWN);
+        1024, 480, SDL_WINDOW_SHOWN);
 
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 200); // red background
     SDL_RenderClear(renderer);
-    SDL_Rect ship_body = { 250, 440, 100, 40 };
-    SDL_Rect left_muzzle = { 250, 400, 10, 40 };
-    SDL_Rect right_muzzle = { 340, 400, 10, 40 };
+    int x = (1024 - 100) / 2;
+    int y = (480 - 40) / 2;
+    SDL_Rect ship_body = { x, y+200, 100, 40 };
+    SDL_Rect left_muzzle = { 470, 380, 10, 40 };
+    SDL_Rect right_muzzle = { 545, 380, 10, 40 };
     SDL_SetRenderDrawColor(renderer, 255,255, 255, 255); 
     SDL_RenderFillRect(renderer, &ship_body);
     SDL_RenderFillRect(renderer, &left_muzzle);
