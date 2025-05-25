@@ -13,9 +13,9 @@ int main() {
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 200); // red background
     SDL_RenderClear(renderer);
-    SDL_Rect ship_body = { 250, 440, 140, 100 };
-    SDL_Rect left_muzzle = { 270, 400, 10, 40 };
-    SDL_Rect right_muzzle = { 360, 400, 10, 40 };
+    SDL_Rect ship_body = { 250, 440, 100, 40 };
+    SDL_Rect left_muzzle = { 250, 400, 10, 40 };
+    SDL_Rect right_muzzle = { 340, 400, 10, 40 };
     SDL_SetRenderDrawColor(renderer, 255,255, 255, 255); 
     SDL_RenderFillRect(renderer, &ship_body);
     SDL_RenderFillRect(renderer, &left_muzzle);
