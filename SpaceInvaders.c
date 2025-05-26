@@ -1,29 +1,56 @@
 #define SDL_MAIN_HANDLED  
 #include <SDL2/SDL.h>
 #include <stdio.h>
-// first commit  by Emele Winner orji-uma
-int main() {
-    SDL_Init(SDL_INIT_VIDEO);
-    printf("\nStarting\n");
-    SDL_Window* window = SDL_CreateWindow("SDL Test",
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        1024, 480, SDL_WINDOW_SHOWN);
+#include "Player.h"
 
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+SDL_Window* window;
+SDL_Renderer* renderer;
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 200); // red background
+void initializeScreen(SDL_Renderer* renderer)
+{
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    int x = (1024 - 100) / 2;
-    int y = (480 - 40) / 2;
-    SDL_Rect ship_body = { x, y+200, 100, 40 };
-    SDL_Rect left_muzzle = { 470, 380, 10, 40 };
-    SDL_Rect right_muzzle = { 545, 380, 10, 40 };
-    SDL_SetRenderDrawColor(renderer, 255,255, 255, 255); 
-    SDL_RenderFillRect(renderer, &ship_body);
-    SDL_RenderFillRect(renderer, &left_muzzle);
-    SDL_RenderFillRect(renderer, &right_muzzle);
-    SDL_RenderPresent(renderer);
-    SDL_Delay(30000); // keep window visible for 3 seconds 
+}
+
+int main() 
+{
+    SDL_Init(SDL_INIT_VIDEO);
+    printf("Starting\n");
+    window = SDL_CreateWindow("SDL Test", 
+            SDL_WINDOWPOS_CENTERED, 
+            SDL_WINDOWPOS_CENTERED,
+            1024, 
+            480, 
+            SDL_WINDOW_RESIZABLE);
+
+    renderer = SDL_CreateRenderer(window, 
+            -1, 
+            SDL_RENDERER_ACCELERATED);
+    
+    initializeScreen(renderer);
+    drawPlayer(renderer);
+
+    int running = 1;
+    SDL_Event event;
+
+    while (running) 
+    {
+        
+        while (SDL_PollEvent(&event)) 
+        {
+            if (event.type == SDL_QUIT) 
+            {
+                running = 0;
+            }
+        }
+        initializeScreen(renderer);
+        drawPlayer(renderer);
+        SDL_RenderPresent(renderer);
+        SDL_Delay(20);
+
+    }
+
+    
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
