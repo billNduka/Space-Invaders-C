@@ -3,6 +3,6 @@
 
 #include <SDL2/SDL.h>
 
-void drawPlayer(SDL_Renderer* renderer);
+void drawPlayer(SDL_Renderer* renderer, int position[2]);
 
 #endif 
