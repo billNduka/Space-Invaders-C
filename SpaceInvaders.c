@@ -1,11 +1,16 @@
 #define SDL_MAIN_HANDLED  
+#define MAX_BULLETS 3
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include "Player.h"
+#include "Bullet.h"
 
 SDL_Window* window;
 SDL_Renderer* renderer;
 int playerPosition[2];
+
+
+Bullet bullets[MAX_BULLETS] = {0};
 
 void initializeScreen(SDL_Renderer* renderer)
 {
@@ -42,9 +47,9 @@ int main()
     int running = 1;
     SDL_Event event;
 
-    // Track key states
     int rightPressed = 0;
     int leftPressed = 0;
+    int shootPressed = 0;
 
     while (running) 
     {
@@ -60,6 +65,7 @@ int main()
                 {
                     case SDLK_SPACE:
                         printf("SHOOT!\n");
+                        shootPressed = 1;                   
                         break;
                     case SDLK_RIGHT:
                     case SDLK_d:
@@ -95,9 +101,35 @@ int main()
             playerPosition[0] += 5; 
         if (leftPressed && playerPosition[0] > 5)
             playerPosition[0] -= 5;
+        
 
         initializeScreen(renderer);
         drawPlayer(renderer, playerPosition);
+        if (shootPressed)
+        {
+            for (int i = 0; i < MAX_BULLETS; ++i) 
+            {
+                if (!bullets[i].active) 
+                {
+                    bullets[i].x = playerPosition[0] + 23;
+                    bullets[i].y = playerPosition[1] + 200 - 20;
+                    bullets[i].active = 1;
+                    break;
+                }
+            }
+            shootPressed = 0;
+        }
+
+        for (int i = 0; i < MAX_BULLETS; ++i) 
+        {
+            if (bullets[i].active) 
+            {
+                bullets[i].y -= 5;
+                drawBullet(renderer, bullets[i].x, bullets[i].y);
+                if (bullets[i].y < 0) bullets[i].active = 0;
+            }
+        }
+
         SDL_RenderPresent(renderer);
         SDL_Delay(16);
     }
