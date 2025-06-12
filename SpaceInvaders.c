@@ -1,9 +1,11 @@
 #define SDL_MAIN_HANDLED  
 #define MAX_BULLETS 3
+#define MAX_ENEMIES 10
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include "Player.h"
 #include "Bullet.h"
+#include "Enemy.h"
 
 SDL_Window* window;
 SDL_Renderer* renderer;
@@ -11,6 +13,8 @@ int playerPosition[2];
 
 
 Bullet bullets[MAX_BULLETS] = {0};
+Enemy enemies[MAX_ENEMIES] = {0};
+
 
 void initializeScreen(SDL_Renderer* renderer)
 {
@@ -25,6 +29,35 @@ void initializePlayer(SDL_Renderer* renderer)
     drawPlayer(renderer, playerPosition);
 }
 
+void initializeEnemies()
+{
+    for(int i = 0; i < MAX_ENEMIES; i++)
+    {
+        enemies[i].active = 1;
+        enemies[i].position[0] = i * 100 + 50;
+        enemies[i].position[1] = 50; 
+    }
+}
+
+void drawEnemies(SDL_Renderer* renderer)
+{
+    for(int i = 0; i < MAX_ENEMIES; i++)
+    {
+        if(enemies[i].active)
+        {
+            drawEnemy(renderer, enemies[i].position);
+        }
+    }
+}
+
+void checkCollisions()
+{
+    for(int i = 0; i < MAX_BULLETS; ++i)
+    {
+        checkCollision(&bullets[i], enemies, MAX_ENEMIES);
+    }
+}
+
 int main() 
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -34,8 +67,8 @@ int main()
             SDL_WINDOWPOS_CENTERED, 
             SDL_WINDOWPOS_CENTERED,
             1024, 
-            480, 
-            SDL_WINDOW_RESIZABLE);
+            480,
+            0);
 
     renderer = SDL_CreateRenderer(window, 
             -1, 
@@ -43,6 +76,7 @@ int main()
     
     initializeScreen(renderer);
     initializePlayer(renderer);
+    initializeEnemies();
 
     int running = 1;
     SDL_Event event;
@@ -102,9 +136,11 @@ int main()
         if (leftPressed && playerPosition[0] > 5)
             playerPosition[0] -= 5;
         
-
+        checkCollisions();
         initializeScreen(renderer);
         drawPlayer(renderer, playerPosition);
+        drawEnemies(renderer);
+
         if (shootPressed)
         {
             for (int i = 0; i < MAX_BULLETS; ++i) 

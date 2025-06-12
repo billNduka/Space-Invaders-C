@@ -3,6 +3,9 @@
 
 #include <SDL2/SDL.h>
 
+#include "Enemy.h"
+
+
 typedef struct 
 {
     int x, y;
@@ -11,5 +14,6 @@ typedef struct
 
 void drawBullet(SDL_Renderer* renderer, int x, int y);
 
+void checkCollision(Bullet* bullet, Enemy* enemies, int numEnemies);
 
 #endif
