@@ -1,5 +1,5 @@
 #define SDL_MAIN_HANDLED  
-#define MAX_BULLETS 3
+#define MAX_BULLETS 7
 #define MAX_ENEMIES 10
 #include <SDL2/SDL.h>
 #include <stdio.h>
@@ -165,9 +165,16 @@ int main()
                 if (bullets[i].y < 0) bullets[i].active = 0;
             }
         }
-
+          for (int i = 0; i < MAX_ENEMIES; ++i)
+    {
+        if (enemies[i].active)
+        {
+            enemies[i].position[1] += 1;
+            drawEnemies(renderer);
+        }
+    }
         SDL_RenderPresent(renderer);
-        SDL_Delay(16);
+        SDL_Delay(20);
     }
 
     SDL_DestroyRenderer(renderer);
